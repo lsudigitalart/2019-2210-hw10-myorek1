@@ -237,6 +237,16 @@ if (keyIsPressed== true) {
 // mybullet.update();
 // mybullet.interact();
 
+ for (var i =0; i < myPlanes.length; i++) {
+   if( myPlanes[i].yPos == -1000) {
+    myPlanes.splice(i,1);
+
+   }
+    
+}
+
+print(myPlanes.length)
+
 // bullet collision 
 for (var i =0; i < myPlanes.length; i++) {
     for(var n = 0; n < myBullets.length; n++) {
@@ -250,7 +260,8 @@ for (var i =0; i < myPlanes.length; i++) {
      }
 
      if( myPlanes[i].hit > 60 ){
-         myPlanes.splice(i,1);
+        //  myPlanes.splice(i,1);
+        myPlanes[i].yPos = -1000;
          print("hit")
      }
     
