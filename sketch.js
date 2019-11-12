@@ -36,6 +36,11 @@ function preload(){
     planes[2] = loadImage("plane3.png");
     planes[3] = loadImage("plane4.png");
 
+    planes2[0] = loadImage("plane1.png");
+    planes2[1] = loadImage("plane2.png");
+    planes2[2] = loadImage("plane3.png");
+    planes2[3] = loadImage("plane4.png");
+
     clouds[0] = loadImage("cloud1.png");
     clouds[1]= loadImage("cloud2.png");
     clouds[2] = loadImage("cloud3.png");
@@ -77,6 +82,8 @@ function player1(){
 var planes = [];
 // array for clouds
 var clouds = [];
+// arry for planes2
+var planes2 = [];
 
 function setup() {
 music.play();
@@ -87,8 +94,13 @@ createCanvas (1000,800);
 
 for(var i = 0; i < 4; i++) {
     myPlanes[i] = new Plane(planes[i], (i+1)*-1, (i+1)*50+50);
-}
 
+    for(var i = 0; i < 4; i++) {
+        myPlanes2[i] = new Plane2(planes2[i], (i+1)*-1.5, (i+1)*50+110);
+    
+
+}
+}
 
 
 
@@ -199,6 +211,11 @@ for (var i = 0; i < myPlanes.length; i++){
     myPlanes[i].display();
     myPlanes[i].update();
 }
+
+for (var i = 0; i < myPlanes2.length; i++){
+    myPlanes2[i].display();
+    myPlanes2[i].update();
+}
 // bullets 
 
 for (var n =0; n < myBullets.length; n++){
@@ -211,20 +228,6 @@ if (keyIsPressed== true) {
 
 
 
-    // if (keyCode == LEFT_ARROW) {
-    // this.xPos = this.xPos-3;
-    // }
-    // else if (keyCode == RIGHT_ARROW) {
-    // this.xPos = this.xPos+3;
-    // }
-    // else if (keyCode == UP_ARROW){
-    //     this.yPos = this.yPos-3;
-    // }
-    // else if (keyCode == DOWN_ARROW){
-    //     this.yPos = this.yPos+3;
-    // }
-       
-    // }
     if(keyCode == ENTER){
 
         myBullets.push(new Bullet(p1x, p1y, bullet, 7));
@@ -233,17 +236,22 @@ if (keyIsPressed== true) {
     }
 
 }
-// mybullet.display();
-// mybullet.update();
-// mybullet.interact();
+
 
  for (var i =0; i < myPlanes.length; i++) {
    if( myPlanes[i].yPos == -1000) {
     myPlanes.splice(i,1);
 
    }
+
+   for (var i =0; i < myPlanes2.length; i++) {
+    if( myPlanes2[i].yPos == -1000) {
+     myPlanes2.splice(i,1);
+ 
+    }
     
 }
+
 
 print(myPlanes.length)
 
@@ -272,8 +280,34 @@ for (var i =0; i < myPlanes.length; i++) {
 }
 }
 
+// planes 2
+for (var i =0; i < myPlanes2.length; i++) {
+    for(var n = 0; n < myBullets.length; n++) {
+
+ var d = dist(myBullets[n].xpos, myBullets[n].ypos, myPlanes2[i].xPos, myPlanes2[i].yPos)
+
+   if (d < 100){
+        myPlanes2[i].speed = + .5
+        score = score + 5;
+        myPlanes2[i].hit =  myPlanes2[i].hit +1 ; 
+     }
+
+     if( myPlanes2[i].hit > 100 ){
+        //  myPlanes.splice(i,1);
+        myPlanes2[i].yPos = -1000;
+         print("hit")
+     }
+    
+     if (myBullets[n].xpos > 1000){
+        myBullets.splice(i,1);
+    }
 
 }
+}
+ 
+ }
+}
+
 
 
 // cloud object 
@@ -299,6 +333,39 @@ this.update = function(){
 }
 // Plane object
 function Plane(tempPlaneImage, tempSpeed, tempY) {
+
+    this.planeImage = tempPlaneImage;
+    this.speed = tempSpeed;
+    this.yPos = tempY
+    this.xPos = 0;
+    this.hit = 0; 
+
+    // what ants look like
+    this.display = function(){
+
+       image(this.planeImage,this.xPos,this.yPos,this.planeImage.width/2, this.planeImage.height/2)
+
+    }
+
+    this.update = function(){
+
+        this.xPos = this.xPos + this.speed;
+
+//resets x position
+        if (this.xPos < 0)
+        this.xPos = 1000;
+    }
+
+
+
+    this.interact = function(){
+
+
+    }  
+}
+
+
+function Plane2(tempPlaneImage, tempSpeed, tempY) {
 
     this.planeImage = tempPlaneImage;
     this.speed = tempSpeed;
